@@ -6,12 +6,14 @@ class StocksController < ApplicationController
   end
 
   def create
-    @stock = Stock.create(stock_params)
+    params["_json"].each do |stock|
+      @stock = Stock.create(name: stock["stock"]["name"], ticker: stock["stock"]["ticker"], date: stock["stock"]["date"], price:stock["stock"]["price"])
+    end
     render json: @stock
   end
 
-  private
-  def stock_params
-    params.require(:stock).permit(:name, :price, :ticker, :date)
-  end
+  # private
+  # def stock_params
+  #   params.require(:stock).permit( :name, :ticker, :price, :date )
+  # end
 end
